@@ -43,14 +43,14 @@ class ContinueHandler(
             return
         }
 
-        requestsExecutor.withTypingAction(message.chat.id) {
-            try {
+        try {
+            requestsExecutor.withTypingAction(message.chat.id) {
                 val prediction = predictionService.getPrediction(sourceText, leaveSource = false)
 
                 prediction.chunked(textLength.last).forEach { requestsExecutor.reply(messageToReply, it) }
-            } catch (e: Exception) {
-                requestsExecutor.reply(messageToReply, "Не получилось, попробуй ещё")
             }
+        } catch (e: Exception) {
+            requestsExecutor.reply(messageToReply, "Не получилось, попробуй ещё")
         }
     }
 }
